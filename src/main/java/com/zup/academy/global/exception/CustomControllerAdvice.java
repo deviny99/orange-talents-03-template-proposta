@@ -8,6 +8,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import static java.util.stream.Collectors.*;
 
@@ -30,5 +33,16 @@ public class CustomControllerAdvice {
         return ResponseEntity.badRequest().body(Map.of("mensagem","requisição invalida",
                 "campos",campos));
 
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> customException(CustomException exception){
+        Map<String, Object> map = new HashMap<>();
+        map.put("timestamp", LocalDateTime.now());
+        map.put("status",exception.getStatus().value());
+        map.put("path","");
+        map.put("error",exception.getStatus().getReasonPhrase());
+        map.put("message",exception.getLocalizedMessage());
+        return ResponseEntity.status(exception.getStatus()).body(map);
     }
 }

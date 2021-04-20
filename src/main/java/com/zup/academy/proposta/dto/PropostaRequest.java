@@ -2,6 +2,7 @@ package com.zup.academy.proposta.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zup.academy.proposta.domain.Proposta;
+
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -39,7 +40,7 @@ public class PropostaRequest {
         this.documento = documento;
     }
 
-        public Proposta toModel(UUID uuid){
+    public Proposta toModel(UUID uuid) {
         return new Proposta(uuid,
                 this.nome,
                 this.email,
@@ -48,4 +49,7 @@ public class PropostaRequest {
                 this.salario);
     }
 
+    public String getNumeroRegistro() {
+        return documento.getNumeroRegistro();
+    }
 }

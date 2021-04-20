@@ -1,7 +1,5 @@
 package com.zup.academy.proposta.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;

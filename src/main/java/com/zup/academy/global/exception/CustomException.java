@@ -11,4 +11,14 @@ public class CustomException extends RuntimeException{
         this.status = httpStatus;
     }
 
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+
+
+    public static CustomException unprocessable(String message){
+        return new CustomException(HttpStatus.UNPROCESSABLE_ENTITY,message);
+    }
+
 }
