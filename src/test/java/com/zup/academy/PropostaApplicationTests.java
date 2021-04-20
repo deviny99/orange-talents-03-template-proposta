@@ -1,13 +1,8 @@
-package com.zup.proposta;
+package com.zup.academy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class PropostaApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
 }

@@ -1,7 +1,7 @@
 server:
   port: 8081
   servlet:
-    context-path: /proposta
+    context-path: /propostas
 
 spring:
   application:
@@ -21,7 +21,7 @@ spring:
       open-in-view: false
 
   datasource:
-    driverClassName: org.h2.Driver
+      driverClassName: org.h2.Driver
       url: jdbc:h2:mem:proposta
       username: root
       password: root
