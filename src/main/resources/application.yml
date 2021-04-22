@@ -34,3 +34,23 @@ spring:
       enabled: true
       path: /h2-console
 
+feign:
+  client:
+    config:
+      default:
+        errorDecoder: com.zup.academy.web.clients.config.ClientErrorDecoder
+
+
+opentracing:
+  jaeger:
+    enabled: true
+    service-name: "proposta"
+    http-sender:
+      url: "http://localhost:14268/api/traces"
+    probabilistic-sampler:
+      sampling-rate: 1
+  spring:
+    cloud:
+      feign:
+        enabled: false
+

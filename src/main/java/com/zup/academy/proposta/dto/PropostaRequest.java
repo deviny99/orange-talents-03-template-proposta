@@ -2,7 +2,6 @@ package com.zup.academy.proposta.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zup.academy.proposta.domain.Proposta;
-
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
