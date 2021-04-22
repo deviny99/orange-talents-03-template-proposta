@@ -40,6 +40,9 @@ feign:
       default:
         errorDecoder: com.zup.academy.web.clients.config.ClientErrorDecoder
 
+keycloak:
+  keyfactory: "RSA"
+  configurationFile: "classpath:keycloak.json"
 
 opentracing:
   jaeger:
