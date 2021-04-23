@@ -12,7 +12,9 @@ public class Cartao {
     private Long id;
     @Column(name = "numero",nullable = false)
     private String numero;
+    @Column(name = "titular",nullable = false)
     private String titular;
+    @Column(name = "emitidoEm",nullable = false)
     private LocalDateTime emitidoEm;
 
     /**Construtor vazio, Unico que utiliza esse construtor é o Hibernate*/

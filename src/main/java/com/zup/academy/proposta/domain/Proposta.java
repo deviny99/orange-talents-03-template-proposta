@@ -25,7 +25,8 @@ public class Proposta {
     private BigDecimal salario;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Cartao cartao;
-
+    @Enumerated(EnumType.STRING)
+    private StatusProposta statusProposta = StatusProposta.SOLICITADO;
 
     /**Construtor vazio, Unico que utiliza esse construtor é o Hibernate*/
     @Deprecated
@@ -53,7 +54,12 @@ public class Proposta {
     }
 
     public String getNumeroCartao() {
-        return this.cartao.getNumero();
+
+        return (this.cartao!=null)? this.cartao.getNumero():"";
+    }
+
+    public StatusProposta getStatusProposta() {
+        return statusProposta;
     }
 
     public void vincularCartao(Cartao cartao){
@@ -62,10 +68,24 @@ public class Proposta {
             throw CustomException.notFound("Não foi informado nenhum cartão para ser vinculado a proposta");
         }
 
-        if(this.cartao == null)
+        if(this.cartao == null){
             this.cartao = cartao;
+            this.propostaAprovada();
+        }
         else
             throw CustomException.unprocessable("A proposta já tem um cartão vinculado a ela, desvincule o " +
                     "cartão atual para poder adicionar outro");
+    }
+
+    private void propostaAprovada(){
+        this.statusProposta = StatusProposta.ASSOCIADO;
+    }
+
+    public void propostaRestrita(){
+        this.statusProposta = StatusProposta.RESTRITO;
+    }
+
+    public void propostaSemRestricao(){
+        this.statusProposta = StatusProposta.SEM_RESTRICAO;
     }
 }

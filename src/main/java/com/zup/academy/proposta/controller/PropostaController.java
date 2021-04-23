@@ -1,5 +1,6 @@
 package com.zup.academy.proposta.controller;
 
+import com.zup.academy.global.exception.CustomException;
 import com.zup.academy.proposta.domain.Proposta;
 import com.zup.academy.proposta.dto.PropostaDetalhes;
 import com.zup.academy.proposta.dto.PropostaRequest;
@@ -47,6 +48,16 @@ class PropostaController {
                 .body(proposta.getId());
     }
 
-   
+    @GetMapping("/{id}")
+    @Transactional(readOnly = true)
+    ResponseEntity<PropostaDetalhes>detalhesProposta(@PathVariable("id") String id){
+
+        Proposta proposta = this.propostaRespository.findById(UUID.fromString(id)).orElseThrow(()->{
+            throw CustomException.notFound("Não existe proposta com ID informado");
+        });
+
+        return ResponseEntity.ok(new PropostaDetalhes(proposta));
+    }
+
 
 }

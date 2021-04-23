@@ -62,7 +62,6 @@ public class AssociarCartaoPropostaControllerTest {
     void naoContemPropostaComIdInformado() throws Exception {
 
         String url = TARGET_ACCOUNT_ENDPOINT+"/1";
-        System.out.println(url);
         MvcResult result = this.propostaTemplate.postEndpoint(
                 this.mockMvc,
                 url, "");
