@@ -1,4 +1,4 @@
-package com.zup.academy.web.clients.solicitacao.dto;
+package com.zup.academy.proxies.solicitacao.dto;
 
 public class SolicitacaoAnaliseRequest {
 

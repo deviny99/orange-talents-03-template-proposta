@@ -38,7 +38,9 @@ feign:
   client:
     config:
       default:
-        errorDecoder: com.zup.academy.web.clients.config.ClientErrorDecoder
+        errorDecoder: com.zup.academy.proxies.config.ClientErrorDecoder
+  metrics:
+    enabled: true
 
 keycloak:
   keyfactory: "RSA"

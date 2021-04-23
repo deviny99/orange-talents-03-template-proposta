@@ -1,6 +1,6 @@
-package com.zup.academy.web.clients.solicitacao;
+package com.zup.academy.proxies.solicitacao;
 
-import com.zup.academy.web.clients.solicitacao.dto.SolicitacaoAnaliseRequest;
+import com.zup.academy.proxies.solicitacao.dto.SolicitacaoAnaliseRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

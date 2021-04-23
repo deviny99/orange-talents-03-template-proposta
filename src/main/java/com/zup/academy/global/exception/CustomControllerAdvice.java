@@ -8,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,4 +44,18 @@ public class CustomControllerAdvice {
         map.put("message",exception.getLocalizedMessage());
         return ResponseEntity.status(exception.getStatus()).body(map);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> illegalArgumentException(IllegalArgumentException exception){
+        Map<String, Object> map = new HashMap<>();
+        map.put("timestamp", LocalDateTime.now());
+        map.put("status","");
+        map.put("path","");
+        map.put("error","");
+        map.put("message",exception.getLocalizedMessage());
+
+        return ResponseEntity.badRequest().body(map);
+    }
+
+
 }

@@ -15,10 +15,12 @@ public class CustomException extends RuntimeException{
         return status;
     }
 
-
-
     public static CustomException unprocessable(String message){
         return new CustomException(HttpStatus.UNPROCESSABLE_ENTITY,message);
+    }
+
+    public static CustomException notFound(String message){
+        return new CustomException(HttpStatus.NOT_FOUND,message);
     }
 
 }

@@ -48,6 +48,7 @@ public class PropostaRequest {
                 this.salario);
     }
 
+
     public String getNumeroRegistro() {
         return documento.getNumeroRegistro();
     }

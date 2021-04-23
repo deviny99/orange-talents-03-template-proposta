@@ -1,25 +1,37 @@
-package com.zup.academy.web.clients.solicitacao;
+package com.zup.academy.proxies.solicitacao;
 
 import com.zup.academy.global.exception.CustomException;
-import com.zup.academy.web.clients.solicitacao.dto.SolicitacaoAnaliseRequest;
+import com.zup.academy.proxies.solicitacao.dto.SolicitacaoAnaliseRequest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest
 @DisplayName("Teste de consulta de dados do solicitante")
 public class SolicitacaoClientTest {
 
-    @Autowired
+    @MockBean
     private SolicitacaoClient solicitacaoClient;
+    private SolicitacaoAnaliseRequest solicitacaoAnaliseRequest;
+
+    @BeforeEach
+    void init() {
+        this.solicitacaoAnaliseRequest  = new SolicitacaoAnaliseRequest("506.070.720-24","Teste da Silva","1");
+    }
 
     @Test
     @DisplayName("Não deve retornar solicitação com restrição")
     void deveRetornarSolicitacaoSemRestricao(){
-        ResponseEntity response = solicitacaoClient.consultarClient(new SolicitacaoAnaliseRequest("506.070.720-24","Teste da Silva","1"));
+
+        ResponseEntity responseEntity =  ResponseEntity.created(null).body("id uuid");
+        Mockito.when(this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest )).thenReturn(responseEntity);
+
+        ResponseEntity response = this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest );
         Assertions.assertEquals(201,response.getStatusCodeValue());
         Assertions.assertNotNull(response.getBody());
     }
@@ -28,7 +40,8 @@ public class SolicitacaoClientTest {
     @DisplayName("Deve retornar solicitação com restrição")
     void deveRetornarSolicitacaoComRestricao(){
         try{
-            ResponseEntity response = solicitacaoClient.consultarClient(new SolicitacaoAnaliseRequest("306.070.720-24","Teste da Silva","1"));
+            Mockito.when(this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest )).thenThrow(CustomException.unprocessable(""));
+            this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest);
             Assertions.fail();
         }catch (CustomException customException)
         {
@@ -36,5 +49,4 @@ public class SolicitacaoClientTest {
             Assertions.assertNotNull(customException.getLocalizedMessage());
         }
     }
-
 }

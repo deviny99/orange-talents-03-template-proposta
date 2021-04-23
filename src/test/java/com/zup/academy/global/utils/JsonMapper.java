@@ -1,4 +1,4 @@
-package com.zup.academy.proposta;
+package com.zup.academy.global.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

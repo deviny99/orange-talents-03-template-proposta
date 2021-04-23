@@ -1,6 +1,7 @@
 package com.zup.academy.proposta.controller;
 
 import com.zup.academy.proposta.domain.Proposta;
+import com.zup.academy.proposta.dto.PropostaDetalhes;
 import com.zup.academy.proposta.dto.PropostaRequest;
 import com.zup.academy.proposta.repository.PropostaRespository;
 import com.zup.academy.proposta.validation.VerificaPropostaJaSolicitada;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping
@@ -30,9 +32,10 @@ class PropostaController {
         binder.addValidators(this.propostaJaSolicitada);
     }
 
-    @Transactional
+
     @PostMapping
-    ResponseEntity<?> cadastrarProposta(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriCB){
+    @Transactional
+    ResponseEntity<UUID> cadastrarProposta(@RequestBody @Valid PropostaRequest propostaRequest, UriComponentsBuilder uriCB){
 
         Proposta proposta = propostaRequest.toModel(null);
         proposta = this.propostaRespository.save(proposta);
@@ -43,5 +46,7 @@ class PropostaController {
                         .toUri())
                 .body(proposta.getId());
     }
+
+   
 
 }
