@@ -5,7 +5,7 @@ public enum StatusProposta {
     SOLICITADO("Aguardando aprovação..."),
     RESTRITO("Solicitação restrita"),
     SEM_RESTRICAO("Solicitação sem restrição"),
-    ASSOCIADO("Proposta aprovada!");
+    ASSOCIADO("Proposta aprovada");
 
     StatusProposta(String value){
         this.value = value;

@@ -29,9 +29,7 @@ class PropostaControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private MvcRest propostaTemplate;
-
     private String TARGET_ENDPOINT = "/";
-
 
     @Test
     @WithMockUser
@@ -112,26 +110,6 @@ class PropostaControllerTest {
         Assertions.assertNotEquals(StatusProposta.ASSOCIADO.toString(),propostaDetalhes.getStatus());
     }
 
-    @Test
-    @WithMockUser
-    @Transactional
-    @Rollback
-    @DisplayName("Deve retornar detalhes da proposta com cartao Associado")
-    void detalhesPropostaComCartaoAssociado() throws Exception {
-
-        var resultCadastroProposta = this.cadastrarPropostaComSucesso();
-        Assertions.assertEquals(201,resultCadastroProposta.getResponse().getStatus());
-
-        var resultAssociarCartao = this.associarPropostaComCartao(resultCadastroProposta.getResponse().getContentAsString());
-        Assertions.assertEquals(200,resultAssociarCartao.getResponse().getStatus());
-
-        var resultDetalhesProposta = this.detalhesDaProposta(TARGET_ENDPOINT+formatarResponse(resultCadastroProposta.getResponse().getContentAsString()));
-        PropostaDetalhes propostaDetalhes = (PropostaDetalhes) JsonMapper.asJsonObject(resultDetalhesProposta.getResponse().getContentAsString(),PropostaDetalhes.class);
-        Assertions.assertEquals(200,resultDetalhesProposta.getResponse().getStatus());
-        Assertions.assertNotNull(propostaDetalhes.getNumeroCartao());
-        Assertions.assertFalse(propostaDetalhes.getNumeroCartao().isEmpty());
-        Assertions.assertEquals(StatusProposta.ASSOCIADO.toString(),propostaDetalhes.getStatus());
-    }
 
     @Test
     @WithMockUser

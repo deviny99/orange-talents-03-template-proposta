@@ -59,5 +59,4 @@ class PropostaController {
         return ResponseEntity.ok(new PropostaDetalhes(proposta));
     }
 
-
 }

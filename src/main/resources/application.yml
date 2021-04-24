@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: ${PORT:8081}
   servlet:
     context-path: /propostas
 
@@ -7,7 +7,7 @@ spring:
   application:
     name: proposta
   profiles:
-    active: dev
+    active: ${PROFILE:dev}
   jpa:
     show-sql: true
     hibernate:
@@ -51,7 +51,7 @@ opentracing:
     enabled: true
     service-name: "proposta"
     http-sender:
-      url: "http://localhost:14268/api/traces"
+      url: ${HOST_OPEN_TRACING:http://localhost:14268/api/traces}
     probabilistic-sampler:
       sampling-rate: 1
   spring:
