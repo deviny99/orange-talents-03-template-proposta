@@ -5,7 +5,6 @@ import com.zup.academy.proposta.dto.PropostaRequest;
 import org.springframework.context.annotation.Profile;
 import java.math.BigDecimal;
 
-@Profile({"integracao-test","test"})
 public class PropostaDataBuilder {
 
 

@@ -1,7 +1,12 @@
 package com.zup.academy.cartao.domain;
 
+import com.zup.academy.global.exception.CustomException;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "cartoes")
@@ -16,6 +21,9 @@ public class Cartao {
     private String titular;
     @Column(name = "emitidoEm",nullable = false)
     private LocalDateTime emitidoEm;
+    @Fetch(FetchMode.JOIN)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Biometria> biometrias = new HashSet();
 
     /**Construtor vazio, Unico que utiliza esse construtor é o Hibernate*/
     @Deprecated
@@ -28,7 +36,24 @@ public class Cartao {
         this.emitidoEm = emitidoEm;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getNumero() {
         return numero;
+    }
+
+    public Set<Biometria> getBiometrias() {
+        return biometrias;
+    }
+
+    public void vincularBiometria(Biometria biometria){
+
+        if(biometria==null){
+            throw CustomException.notFound("Não foi qselecionado nenhuma biometria para ser vinculada " +
+                    "ao cartao");
+        }
+        this.biometrias.add(biometria);
     }
 }
