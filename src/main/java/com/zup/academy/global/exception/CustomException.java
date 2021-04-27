@@ -19,6 +19,10 @@ public class CustomException extends RuntimeException{
         return new CustomException(HttpStatus.UNPROCESSABLE_ENTITY,message);
     }
 
+    public static CustomException badRequest(String message){
+        return new CustomException(HttpStatus.BAD_REQUEST,message);
+    }
+
     public static CustomException notFound(String message){
         return new CustomException(HttpStatus.NOT_FOUND,message);
     }

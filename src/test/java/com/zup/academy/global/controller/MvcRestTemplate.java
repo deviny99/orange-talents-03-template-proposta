@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import java.net.InetAddress;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,12 +22,24 @@ class MvcRestTemplate implements MvcRest {
     }
 
     @Override
-    public MvcResult getEndpoint(MockMvc mockMvc, String url, String contentBody) throws Exception {
-        return  mockMvc.perform(get(url)
+    public MvcResult postEndpointWithHeaders(MockMvc mockMvc, String url, String contentBody) throws Exception {
+        return  mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("User-Agent","Testes Integrados")
+                .header("X-Forwarded-For", InetAddress.getLocalHost().getHostAddress())
                 .with(csrf())
                 .content(contentBody))
                 .andReturn();
     }
 
+    @Override
+    public MvcResult getEndpoint(MockMvc mockMvc, String url, String contentBody) throws Exception {
+        return  mockMvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("User-Agent","Testes Integrados")
+                .header("X-Forwarded-For", InetAddress.getLocalHost().getHostAddress())
+                .with(csrf())
+                .content(contentBody))
+                .andReturn();
+    }
 }

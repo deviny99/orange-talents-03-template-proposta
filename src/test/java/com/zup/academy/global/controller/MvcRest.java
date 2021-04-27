@@ -6,6 +6,7 @@ import org.springframework.test.web.servlet.MvcResult;
 public interface MvcRest {
 
     MvcResult postEndpoint(MockMvc mockMvc, String url, String contentBody) throws Exception;
+    MvcResult postEndpointWithHeaders(MockMvc mockMvc, String url, String contentBody) throws Exception;
     MvcResult getEndpoint(MockMvc mockMvc, String url, String contentBody) throws Exception;
 
 }

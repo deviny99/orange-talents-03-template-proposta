@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
@@ -23,7 +22,7 @@ public class HealthCheckTest {
 
     @Test
     @DisplayName("Verifica endpoint da saúde da aplicacao")
-    @WithMockUser(roles = "METRICS_ADMIN")
+    @WithMockUser(roles = "ADMIN_METRICS")
     void verificaEndpointDaSaudeDaAplicacao() throws Exception {
         MvcResult result = this.mockMvc.perform(get("/actuator/health")
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
@@ -42,8 +41,5 @@ public class HealthCheckTest {
         Assertions.assertEquals(403,result.getResponse().getStatus());
 
     }
-
-
-
 
 }

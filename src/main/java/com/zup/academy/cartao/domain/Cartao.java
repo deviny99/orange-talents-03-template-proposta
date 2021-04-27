@@ -56,4 +56,5 @@ public class Cartao {
         }
         this.biometrias.add(biometria);
     }
+
 }
