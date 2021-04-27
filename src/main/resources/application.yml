@@ -59,3 +59,8 @@ opentracing:
       feign:
         enabled: false
 
+clients:
+  account:
+    url: ${ACCOUNT_HOST:localhost:8888/api/cartoes}
+  solicitacao:
+    url: ${SOLICITACAO_HOST:localhost:9999/api}

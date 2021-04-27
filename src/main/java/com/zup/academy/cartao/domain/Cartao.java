@@ -24,6 +24,8 @@ public class Cartao {
     @Fetch(FetchMode.JOIN)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Biometria> biometrias = new HashSet();
+    @Enumerated(EnumType.STRING)
+    private StatusCartao statusCartao = StatusCartao.ATIVO;
 
     /**Construtor vazio, Unico que utiliza esse construtor é o Hibernate*/
     @Deprecated
@@ -49,12 +51,18 @@ public class Cartao {
     }
 
     public void vincularBiometria(Biometria biometria){
-
         if(biometria==null){
-            throw CustomException.notFound("Não foi qselecionado nenhuma biometria para ser vinculada " +
+            throw CustomException.notFound("Não foi selecionado nenhuma biometria para ser vinculada " +
                     "ao cartao");
         }
         this.biometrias.add(biometria);
+    }
+
+    public void bloquear(){
+        if (this.statusCartao.equals(StatusCartao.BLOQUEADO)){
+            throw CustomException.unprocessable("Esse cartão já está bloqueado");
+        }
+        this.statusCartao = StatusCartao.BLOQUEADO;
     }
 
 }

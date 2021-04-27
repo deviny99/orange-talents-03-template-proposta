@@ -23,15 +23,15 @@ class AssociarCartaoPropostaScheduler {
         this.accountClient = accountClient;
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 50000)
     @Transactional
     void associarCartaoComProposta(){
 
-        this.propostaRespository.findByStatusProposta(StatusProposta.SEM_RESTRICAO).forEach(it ->{
+        this.propostaRespository.findByStatusProposta(StatusProposta.SEM_RESTRICAO).forEach(proposta ->{
 
-            ResponseEntity<CartaoResponse> cartaoResponse = this.accountClient.addCartao(new PropostaDto(it));
-            it.vincularCartao(cartaoResponse.getBody().toModel(null));
-            this.propostaRespository.save(it);
+            ResponseEntity<CartaoResponse> cartaoResponse = this.accountClient.addCartao(new PropostaDto(proposta));
+            proposta.vincularCartao(cartaoResponse.getBody().toModel(null));
+            this.propostaRespository.save(proposta);
 
         });
     }

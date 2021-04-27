@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "solicitacaoAnalise", url = "localhost:9999/api")
+@FeignClient(name = "solicitacaoAnalise", url = "${clients.solicitacao.url}")
 public interface SolicitacaoClient {
 
     @RequestMapping(value = "/solicitacao",method = RequestMethod.POST)
