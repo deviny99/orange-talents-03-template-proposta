@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.actuate.metrics.AutoConfigureMetrics;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -14,11 +15,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureMetrics
 @DisplayName("Testa os endpoints de HelthCheck da aplicação")
 public class HealthCheckTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+
+    @Test
+    @DisplayName("Verifica endpoint de metricas com prometheus")
+    @WithMockUser(roles = "ADMIN_METRICS")
+    void verificaEndpointDaSaudeDaAplicacaoPrometheus() throws Exception {
+        MvcResult result = this.mockMvc.perform(get("/actuator/prometheus")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        Assertions.assertEquals(200,result.getResponse().getStatus());
+    }
 
     @Test
     @DisplayName("Verifica endpoint da saúde da aplicacao")

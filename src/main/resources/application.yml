@@ -64,3 +64,18 @@ clients:
     url: ${ACCOUNT_HOST:localhost:8888/api/cartoes}
   solicitacao:
     url: ${SOLICITACAO_HOST:localhost:9999/api}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+    endpoint:
+      metrics:
+        enabled: false
+      prometheus:
+        enabled: true
