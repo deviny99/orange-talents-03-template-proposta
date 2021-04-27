@@ -8,6 +8,10 @@ spring:
     name: proposta
   profiles:
     active: ${PROFILE:dev}
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
   jpa:
     show-sql: true
     hibernate:
