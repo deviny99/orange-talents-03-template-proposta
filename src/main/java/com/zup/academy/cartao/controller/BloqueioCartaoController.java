@@ -3,6 +3,7 @@ package com.zup.academy.cartao.controller;
 import com.zup.academy.cartao.domain.BloqueioCartao;
 import com.zup.academy.cartao.domain.Cartao;
 import com.zup.academy.cartao.domain.StatusBloqueioCartao;
+import com.zup.academy.cartao.dto.BloqueioCartaoResponse;
 import com.zup.academy.cartao.repository.BloqueioRepository;
 import com.zup.academy.cartao.repository.CartaoRepository;
 import com.zup.academy.global.exception.CustomException;
@@ -54,12 +55,12 @@ class BloqueioCartaoController {
 
     private void notificarLegadoAccount(Long cartaoId){
 
-        ResponseEntity<String> responseCartaoLegado = this.accountClient.bloquearCartao(cartaoId);
+        ResponseEntity<BloqueioCartaoResponse> responseCartaoLegado = this.accountClient.bloquearCartao(cartaoId);
         if (responseCartaoLegado.getStatusCode().value() != 200){
             throw CustomException.badRequest(responseCartaoLegado.getStatusCode().toString());
         }
 
-        if (!responseCartaoLegado.getBody().equals(StatusBloqueioCartao.BLOQUEADO.toString())){
+        if (!responseCartaoLegado.getBody().toResponse().equals(StatusBloqueioCartao.BLOQUEADO)){
             throw CustomException.unprocessable("Cartão não bloqueado");
         }
     }

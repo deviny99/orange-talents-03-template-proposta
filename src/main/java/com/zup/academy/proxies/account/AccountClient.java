@@ -1,6 +1,8 @@
 package com.zup.academy.proxies.account;
 
+import com.zup.academy.cartao.dto.BloqueioCartaoResponse;
 import com.zup.academy.cartao.dto.CartaoResponse;
+import com.zup.academy.cartao.dto.NotificacaoViagemResponse;
 import com.zup.academy.proposta.dto.PropostaDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -15,5 +17,10 @@ public interface AccountClient {
     ResponseEntity<CartaoResponse> addCartao(@RequestBody PropostaDto propostaDto);
 
     @PostMapping("/{id}/bloqueios")
-    ResponseEntity<String> bloquearCartao(@PathVariable("id") Long id);
+    ResponseEntity<BloqueioCartaoResponse> bloquearCartao(@PathVariable("id") Long id);
+
+    @PostMapping("/{id}/avisos")
+    ResponseEntity<NotificacaoViagemResponse> notificarBanco(@PathVariable("id") Long id);
+
+
 }

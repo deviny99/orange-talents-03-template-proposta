@@ -1,14 +1,14 @@
 package com.zup.academy.cartao.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.zup.academy.cartao.domain.Cartao;
 import com.zup.academy.cartao.domain.NotificacaoViagem;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class NotificacaoViagemRequest {
@@ -16,7 +16,8 @@ public class NotificacaoViagemRequest {
     @NotBlank
     @JsonProperty("destino")
     private String destino;
-    @NotBlank
+    @NotNull
+    @FutureOrPresent
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonProperty("dtTermino")
     private LocalDate dtTermino;
