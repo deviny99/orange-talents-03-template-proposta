@@ -1,8 +1,6 @@
 package com.zup.academy.cartao.controller;
 
 import com.zup.academy.cartao.domain.Cartao;
-import com.zup.academy.cartao.domain.CarteiraDigital;
-import com.zup.academy.cartao.dto.carteira.CarteiraDigitalDtoFeign;
 import com.zup.academy.cartao.dto.carteira.CarteiraDigitalRequest;
 import com.zup.academy.cartao.dto.carteira.CarteiraDigitalResponseFeign;
 import com.zup.academy.cartao.repository.CartaoRepository;
@@ -43,12 +41,12 @@ public class CarteiraDigitalControllerTest {
     @Rollback
     @WithMockUser
     @Transactional
-    @DisplayName("Deve associar cartão com carteira digital do paypal")
+    @DisplayName("Deve associar cartão com carteira digital do Paypal")
     void deveAssociarCartaoComCarteiraDigitalPaypal() throws Exception {
         Cartao cartao = this.cartaoRepository.save(new Cartao(null,"1828393849","ciclaninho", LocalDateTime.now()));
         Assertions.assertNotNull(cartao);
 
-        CarteiraDigitalDtoFeign carteiraDigitalDto =  new CarteiraDigitalDtoFeign("email@email.com", CarteiraDigital.PAYPAL);
+       // CarteiraDigitalDtoFeign carteiraDigitalDto =  new CarteiraDigitalDtoFeign("email@email.com", CarteiraDigital.PAYPAL);
 
         Mockito.when(this.contasProxy.associarCarteiraDigital(
                 Mockito.any(),Mockito.any()))
@@ -66,7 +64,7 @@ public class CarteiraDigitalControllerTest {
     @Rollback
     @WithMockUser
     @Transactional
-    @DisplayName("Não deve associar o mesmo cartão com carteira digital do paypal")
+    @DisplayName("Não deve associar o mesmo cartão com carteira digital do Paypal")
     void naoDeveAssociarOmesmoCartaoParaCarteiraPaypal() throws Exception {
 
         Cartao cartao = this.cartaoRepository.save(new Cartao(null,"1828393849","ciclaninho", LocalDateTime.now()));
@@ -83,6 +81,55 @@ public class CarteiraDigitalControllerTest {
         Assertions.assertTrue(result.getResponse().containsHeader("Location"));
         var result2 = this.mvcRest.postEndpoint(this.mockMvc,
                 "/cards/"+cartao.getId()+"/paypal",
+                asJsonString(new CarteiraDigitalRequest("email@email.com")));
+        Assertions.assertEquals(422,result2.getResponse().getStatus());
+
+    }
+
+    @Test
+    @Rollback
+    @WithMockUser
+    @Transactional
+    @DisplayName("Deve associar cartão com carteira digital do Samsung Pay")
+    void deveAssociarCartaoComCarteiraDigitalSamsungPay() throws Exception {
+        Cartao cartao = this.cartaoRepository.save(new Cartao(null,"1828393849","ciclaninho", LocalDateTime.now()));
+        Assertions.assertNotNull(cartao);
+
+       // CarteiraDigitalDtoFeign carteiraDigitalDto =  new CarteiraDigitalDtoFeign("email@email.com", CarteiraDigital.PAYPAL);
+
+        Mockito.when(this.contasProxy.associarCarteiraDigital(
+                Mockito.any(),Mockito.any()))
+                .thenReturn(new CarteiraDigitalResponseFeign("ASSOCIADA","2"));
+
+        var result = this.mvcRest.postEndpoint(this.mockMvc,
+                "/cards/"+cartao.getId()+"/samsung",
+                asJsonString(new CarteiraDigitalRequest("email@email.com")));
+        Assertions.assertEquals(201,result.getResponse().getStatus());
+        Assertions.assertNotNull(result.getResponse().getHeader("Location"));
+        Assertions.assertTrue(result.getResponse().containsHeader("Location"));
+    }
+
+    @Test
+    @Rollback
+    @WithMockUser
+    @Transactional
+    @DisplayName("Não deve associar o mesmo cartão com carteira digital do Samsung Pay")
+    void naoDeveAssociarOmesmoCartaoParaCarteiraSamsungPay() throws Exception {
+
+        Cartao cartao = this.cartaoRepository.save(new Cartao(null,"1828393849","ciclaninho", LocalDateTime.now()));
+
+        Mockito.when(this.contasProxy.associarCarteiraDigital(
+                Mockito.any(),Mockito.any()))
+                .thenReturn(new CarteiraDigitalResponseFeign("ASSOCIADA","2"));
+
+        var result = this.mvcRest.postEndpoint(this.mockMvc,
+                "/cards/"+cartao.getId()+"/samsung",
+                asJsonString(new CarteiraDigitalRequest("email@email.com")));
+        Assertions.assertEquals(201,result.getResponse().getStatus());
+        Assertions.assertNotNull(result.getResponse().getHeader("Location"));
+        Assertions.assertTrue(result.getResponse().containsHeader("Location"));
+        var result2 = this.mvcRest.postEndpoint(this.mockMvc,
+                "/cards/"+cartao.getId()+"/samsung",
                 asJsonString(new CarteiraDigitalRequest("email@email.com")));
         Assertions.assertEquals(422,result2.getResponse().getStatus());
 

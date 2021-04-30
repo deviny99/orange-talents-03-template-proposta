@@ -59,7 +59,7 @@ class BloqueioCartaoController {
 
     private void notificarLegadoAccount(String numeroCartao){
 
-        BloqueioCartaoResponseFeign responseCartaoLegado = this.contasProxy.bloquearCartao(numeroCartao, new BloqueioCartaoRequestFeign(sistemaName));
+        BloqueioCartaoResponseFeign responseCartaoLegado = this.contasProxy.bloquearCartao(numeroCartao, new BloqueioCartaoRequestFeign(this.sistemaName));
 
         if (!responseCartaoLegado.toResponse().equals(StatusBloqueioCartao.BLOQUEADO)){
             throw CustomException.unprocessable("Cartão não bloqueado");

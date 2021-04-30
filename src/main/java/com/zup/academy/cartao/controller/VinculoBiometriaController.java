@@ -28,7 +28,8 @@ public class VinculoBiometriaController {
 
     @Transactional
     @PostMapping("/{id}/biometria")
-    ResponseEntity<?> cadastrarBiometria(@PathVariable("id") Long id,@RequestBody @Valid BiometriaRequest biometriaRequest){
+    ResponseEntity<?> cadastrarBiometria(@PathVariable("id") Long id,
+                                         @RequestBody @Valid BiometriaRequest biometriaRequest){
 
         Cartao cartao = this.cartaoRepository.findById(id).orElseThrow(()->{
             throw CustomException.notFound("Não contem um cartão com o ID informado");

@@ -23,7 +23,8 @@ class NotificacaoViagemController {
     private final NotificacaoViagemRepository notificacaoViagemRepository;
     private final ContasProxy contasProxy;
 
-    public NotificacaoViagemController(CartaoRepository cartaoRepository,NotificacaoViagemRepository notificacaoViagemRepository,
+    public NotificacaoViagemController(CartaoRepository cartaoRepository,
+                                       NotificacaoViagemRepository notificacaoViagemRepository,
                                        ContasProxy contasProxy){
         this.notificacaoViagemRepository = notificacaoViagemRepository;
         this.cartaoRepository = cartaoRepository;
@@ -54,7 +55,8 @@ class NotificacaoViagemController {
     }
 
     private void notificarBanco(String numeroCartao, NotificacaoViagemRequestFeign notificacaoViagemRequest){
-        NotificacaoViagemResponseFeign notificacaoViagemResponse = this.contasProxy.notificarBanco(numeroCartao,notificacaoViagemRequest);
+        NotificacaoViagemResponseFeign notificacaoViagemResponse = this.contasProxy.notificarBanco(numeroCartao,
+                notificacaoViagemRequest);
 
         if (!notificacaoViagemResponse.toResponse().equals(StatusNotificacaoViagem.CRIADO)){
             throw CustomException.unprocessable("Não foi possivel criar a notificação de viagem no banco");

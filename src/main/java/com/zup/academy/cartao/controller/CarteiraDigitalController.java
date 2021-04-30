@@ -29,19 +29,35 @@ class CarteiraDigitalController {
 
     @Transactional
     @PostMapping("/{id}/paypal")
-    ResponseEntity<?> associarCarteira(@PathVariable("id") Long id, @Valid @RequestBody CarteiraDigitalRequest carteiraRequest, UriComponentsBuilder uri){
+    ResponseEntity<?> associarCarteiraPaypal(@PathVariable("id") Long id, @Valid @RequestBody CarteiraDigitalRequest carteiraRequest,
+                                             UriComponentsBuilder uri){
 
+        String idCarteira = getAssociarCarteira(id,carteiraRequest,CarteiraDigital.PAYPAL);
+
+        return ResponseEntity.created(uri.path("/cards/carteiras/{id}").buildAndExpand(idCarteira).toUri())
+                .body(idCarteira);
+    }
+
+    @Transactional
+    @PostMapping("/{id}/samsung")
+    ResponseEntity<?> associarCarteiraSamsung(@PathVariable("id") Long id, @Valid @RequestBody CarteiraDigitalRequest carteiraRequest,
+                                              UriComponentsBuilder uri){
+
+        String idCarteira = getAssociarCarteira(id,carteiraRequest,CarteiraDigital.SAMSUNG_PAY);
+
+        return ResponseEntity.created(uri.path("/cards/carteiras/{id}").buildAndExpand(idCarteira).toUri())
+                .body(idCarteira);
+    }
+
+    private String getAssociarCarteira(Long id, CarteiraDigitalRequest carteiraDigitalRequest, CarteiraDigital carteiraDigital){
         Cartao cartao = this.cartaoRepository.findById(id).orElseThrow(()->{
             throw CustomException.notFound("Não contem um cartão com o ID informado");
         });
 
-        cartao.associarCarteira(CarteiraDigital.PAYPAL);
+        cartao.associarCarteira(carteiraDigital);
         this.cartaoRepository.save(cartao);
-
-        String idCarteira = this.associarCarteiraLegado(cartao.getNumero(),new CarteiraDigitalDtoFeign(carteiraRequest.getEmail(),CarteiraDigital.PAYPAL));
-
-        return ResponseEntity.created(uri.path("/cards/carteiras/{id}").buildAndExpand(idCarteira).toUri())
-                .body(idCarteira);
+        return this.associarCarteiraLegado(cartao.getNumero(),
+                new CarteiraDigitalDtoFeign(carteiraDigitalRequest.getEmail(),carteiraDigital));
     }
 
     private String associarCarteiraLegado(String numeroCartao, CarteiraDigitalDtoFeign carteiraDigitalDto){
