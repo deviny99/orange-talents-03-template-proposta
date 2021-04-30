@@ -1,11 +1,11 @@
 package com.zup.academy.cartao.controller;
 
 import com.zup.academy.cartao.domain.Cartao;
-import com.zup.academy.cartao.dto.NotificacaoViagemRequest;
-import com.zup.academy.cartao.dto.NotificacaoViagemResponse;
+import com.zup.academy.cartao.dto.viagem.NotificacaoViagemRequestFeign;
+import com.zup.academy.cartao.dto.viagem.NotificacaoViagemResponseFeign;
 import com.zup.academy.cartao.repository.CartaoRepository;
 import com.zup.academy.global.controller.MvcRest;
-import com.zup.academy.proxies.account.AccountClient;
+import com.zup.academy.proxies.contas.ContasProxy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +36,7 @@ public class NotificacaoViagemControllerTest {
     @Autowired
     private CartaoRepository cartaoRepository;
     @MockBean
-    private AccountClient accountClient;
+    private ContasProxy contasProxy;
 
     @Test
     @WithMockUser
@@ -48,11 +47,11 @@ public class NotificacaoViagemControllerTest {
         Cartao cartao = this.cartaoRepository.save(new Cartao(null,"1828393849","ciclaninho", LocalDateTime.now()));
         Assertions.assertNotNull(cartao);
 
-        Mockito.when(this.accountClient.notificarBanco(cartao.getId())).thenReturn(ResponseEntity.ok(new NotificacaoViagemResponse("CRIADO")));
+        Mockito.when(this.contasProxy.notificarBanco(Mockito.any(),Mockito.any())).thenReturn(new NotificacaoViagemResponseFeign("CRIADO"));
 
         var result = this.mvcRest.postEndpointWithHeaders(this.mockMvc,
-                "/card/"+cartao.getId()+"/notificacao",
-                asJsonString(new NotificacaoViagemRequest("Dinamarca", LocalDate.of(2999,10,10))));
+                "/cards/"+cartao.getId()+"/notificacao",
+                asJsonString(new NotificacaoViagemRequestFeign("Dinamarca", LocalDate.of(2999,10,10))));
         Assertions.assertEquals(201,result.getResponse().getStatus());
         Assertions.assertNotNull(result.getResponse().getHeader("Location"));
         Assertions.assertTrue(result.getResponse().containsHeader("Location"));
@@ -68,11 +67,11 @@ public class NotificacaoViagemControllerTest {
         Cartao cartao = this.cartaoRepository.save(new Cartao(null,"1828393849","ciclaninho", LocalDateTime.now()));
         Assertions.assertNotNull(cartao);
 
-        Mockito.when(this.accountClient.notificarBanco(cartao.getId())).thenReturn(ResponseEntity.ok(new NotificacaoViagemResponse("CRIADO")));
+        Mockito.when(this.contasProxy.notificarBanco(Mockito.any(),Mockito.any())).thenReturn(new NotificacaoViagemResponseFeign("CRIADO"));
 
         var result = this.mvcRest.postEndpointWithHeaders(this.mockMvc,
-                "/card/"+cartao.getId()+"/notificacao",
-                asJsonString(new NotificacaoViagemRequest("Dinamarca", LocalDate.of(2000,10,10))));
+                "/cards/"+cartao.getId()+"/notificacao",
+                asJsonString(new NotificacaoViagemRequestFeign("Dinamarca", LocalDate.of(2000,10,10))));
         Assertions.assertEquals(400,result.getResponse().getStatus());
     }
 
@@ -86,11 +85,11 @@ public class NotificacaoViagemControllerTest {
         Cartao cartao = this.cartaoRepository.save(new Cartao(null,"1828393849","ciclaninho", LocalDateTime.now()));
         Assertions.assertNotNull(cartao);
 
-        Mockito.when(this.accountClient.notificarBanco(cartao.getId())).thenReturn(ResponseEntity.ok(new NotificacaoViagemResponse("NAO_CRIADO")));
+        Mockito.when(this.contasProxy.notificarBanco(Mockito.any(),Mockito.any())).thenReturn(new NotificacaoViagemResponseFeign("NAO_CRIADO"));
 
         var result = this.mvcRest.postEndpointWithHeaders(this.mockMvc,
-                "/card/"+cartao.getId()+"/notificacao",
-                asJsonString(new NotificacaoViagemRequest("Dinamarca", LocalDate.of(2000,10,10))));
+                "/cards/"+cartao.getId()+"/notificacao",
+                asJsonString(new NotificacaoViagemRequestFeign("Dinamarca", LocalDate.of(2000,10,10))));
         Assertions.assertEquals(400,result.getResponse().getStatus());
     }
 

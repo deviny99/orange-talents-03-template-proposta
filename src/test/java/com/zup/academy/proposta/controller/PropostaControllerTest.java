@@ -29,7 +29,7 @@ class PropostaControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private MvcRest propostaTemplate;
-    private String TARGET_ENDPOINT = "/";
+    private String TARGET_ENDPOINT = "/propostas";
 
     @Test
     @WithMockUser
@@ -102,7 +102,7 @@ class PropostaControllerTest {
     void detalhesProposta() throws Exception {
 
         var mvcResult = this.cadastrarPropostaComSucesso();
-        String url = TARGET_ENDPOINT+formatarResponse(mvcResult.getResponse().getContentAsString());
+        String url = TARGET_ENDPOINT+"/"+formatarResponse(mvcResult.getResponse().getContentAsString());
 
         var resultDetalhesProposta = this.detalhesDaProposta(url);
         PropostaDetalhes propostaDetalhes = (PropostaDetalhes) JsonMapper.asJsonObject(resultDetalhesProposta.getResponse().getContentAsString(),PropostaDetalhes.class);

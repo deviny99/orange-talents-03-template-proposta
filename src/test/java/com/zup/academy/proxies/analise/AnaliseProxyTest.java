@@ -1,7 +1,7 @@
-package com.zup.academy.proxies.solicitacao;
+package com.zup.academy.proxies.analise;
 
 import com.zup.academy.global.exception.CustomException;
-import com.zup.academy.proxies.solicitacao.dto.SolicitacaoAnaliseRequest;
+import com.zup.academy.proxies.analise.dto.SolicitacaoAnaliseRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,10 +13,10 @@ import org.springframework.http.ResponseEntity;
 
 @SpringBootTest
 @DisplayName("Teste de consulta de dados do solicitante")
-public class SolicitacaoClientTest {
+public class AnaliseProxyTest {
 
     @MockBean
-    private SolicitacaoClient solicitacaoClient;
+    private AnaliseProxy analiseProxy;
     private SolicitacaoAnaliseRequest solicitacaoAnaliseRequest;
 
     @BeforeEach
@@ -29,9 +29,9 @@ public class SolicitacaoClientTest {
     void deveRetornarSolicitacaoSemRestricao(){
 
         ResponseEntity responseEntity =  ResponseEntity.created(null).body("id uuid");
-        Mockito.when(this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest )).thenReturn(responseEntity);
+        Mockito.when(this.analiseProxy.consultarClient(this.solicitacaoAnaliseRequest )).thenReturn(responseEntity);
 
-        ResponseEntity response = this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest );
+        ResponseEntity response = this.analiseProxy.consultarClient(this.solicitacaoAnaliseRequest );
         Assertions.assertEquals(201,response.getStatusCodeValue());
         Assertions.assertNotNull(response.getBody());
     }
@@ -40,8 +40,8 @@ public class SolicitacaoClientTest {
     @DisplayName("Deve retornar solicitação com restrição")
     void deveRetornarSolicitacaoComRestricao(){
         try{
-            Mockito.when(this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest )).thenThrow(CustomException.unprocessable(""));
-            this.solicitacaoClient.consultarClient(this.solicitacaoAnaliseRequest);
+            Mockito.when(this.analiseProxy.consultarClient(this.solicitacaoAnaliseRequest )).thenThrow(CustomException.unprocessable(""));
+            this.analiseProxy.consultarClient(this.solicitacaoAnaliseRequest);
             Assertions.fail();
         }catch (CustomException customException)
         {

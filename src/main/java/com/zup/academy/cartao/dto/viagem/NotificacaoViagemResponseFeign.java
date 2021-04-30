@@ -1,14 +1,16 @@
-package com.zup.academy.cartao.dto;
+package com.zup.academy.cartao.dto.viagem;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zup.academy.cartao.domain.StatusNotificacaoViagem;
 
-public class NotificacaoViagemResponse {
+public class NotificacaoViagemResponseFeign {
 
     @JsonProperty("resultado")
     private String resultado;
 
-    public NotificacaoViagemResponse(String resultado) {
+    public NotificacaoViagemResponseFeign(){}
+
+    public NotificacaoViagemResponseFeign(String resultado) {
         this.resultado = resultado;
     }
 

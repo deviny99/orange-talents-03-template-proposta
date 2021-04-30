@@ -40,4 +40,71 @@ class CartaoTest {
         }
     }
 
+    @Test
+    @DisplayName("Deve bloquear cartão")
+    void deveBloquearCartao(){
+        try {
+            this.cartao.bloquear();
+        }catch (Exception exception){
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    @DisplayName("Não deve bloquear o cartão já bloqueado")
+    void naoDeveBloquearCartaoJaBloqueado(){
+        try {
+            this.cartao.bloquear();
+            this.cartao.bloquear();
+            Assertions.fail();
+        }catch (CustomException exception){
+            Assertions.assertEquals(422,exception.getStatus().value());
+        }
+    }
+
+    @Test
+    @DisplayName("Deve desbloquear cartão")
+    void deveDesbloquearCartao(){
+        try {
+            this.cartao.bloquear();
+            this.cartao.desbloquear();
+        }catch (Exception exception){
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    @DisplayName("Não deve desbloquear crtão já desbloqueado")
+    void naoDeveDesbloquearCartaoJaDesbloqueado(){
+        try {
+            this.cartao.bloquear();
+            this.cartao.desbloquear();
+            this.cartao.desbloquear();
+            Assertions.fail();
+        }catch (CustomException exception){
+            Assertions.assertEquals(422,exception.getStatus().value());
+        }
+    }
+
+    @Test
+    @DisplayName("Deve associar Carteira digital")
+    void deveAssociarCarteira(){
+        try {
+            this.cartao.associarCarteira(CarteiraDigital.PAYPAL);
+        }catch (Exception exception){
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    @DisplayName("Não deve associar Carteira digital já associada")
+    void naoDeveAssociarCarteiraJaAssociada(){
+        try {
+            this.cartao.associarCarteira(CarteiraDigital.PAYPAL);
+            this.cartao.associarCarteira(CarteiraDigital.PAYPAL);
+            Assertions.fail();
+        }catch (CustomException exception){
+            Assertions.assertEquals(422,exception.getStatus().value());
+        }
+    }
 }

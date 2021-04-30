@@ -29,7 +29,7 @@ public class AssociarCartaoPropostaTest {
     @Autowired
     private MvcRest propostaTemplate;
 
-    private String TARGET_ENDPOINT = "/";
+    private String TARGET_ENDPOINT = "/propostas";
 
     @Test
     @WithMockUser

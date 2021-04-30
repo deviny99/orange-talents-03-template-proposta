@@ -4,9 +4,11 @@ import com.zup.academy.cartao.domain.BloqueioCartao;
 import com.zup.academy.cartao.domain.Cartao;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BloqueioRepository extends JpaRepository<BloqueioCartao,Long> {
+import java.util.UUID;
+
+public interface BloqueioRepository extends JpaRepository<BloqueioCartao, UUID> {
 
 
-    boolean findByCartao(Cartao cartao);
+    Boolean existsByCartao(Cartao cartao);
 
 }

@@ -11,6 +11,8 @@ public class ClientErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String s, Response response) {
 
+        System.out.println(response.headers());
+
         if(400 == response.status()){
             return CustomException.unprocessable("Solicitante com restrição");
         }
@@ -20,15 +22,15 @@ public class ClientErrorDecoder implements ErrorDecoder {
         }
 
         if(403 == response.status()){
-            return CustomException.unprocessable("");
+            return CustomException.notFound(response.toString());
         }
 
         if(500 == response.status()){
-            return CustomException.unprocessable("");
+            return CustomException.badRequest(response.toString());
         }
 
         if(404 == response.status()){
-            return CustomException.notFound("");
+            return CustomException.notFound(response.toString());
         }
 
         return defaultErrorDecoder.decode(s,response);

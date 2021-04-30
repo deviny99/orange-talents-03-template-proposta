@@ -1,17 +1,18 @@
-package com.zup.academy.cartao.dto;
+package com.zup.academy.cartao.dto.viagem;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.zup.academy.cartao.domain.Cartao;
 import com.zup.academy.cartao.domain.NotificacaoViagem;
-
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class NotificacaoViagemRequest {
+public class NotificacaoViagemRequestFeign {
 
     @NotBlank
     @JsonProperty("destino")
@@ -19,15 +20,16 @@ public class NotificacaoViagemRequest {
     @NotNull
     @FutureOrPresent
     @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonProperty("dtTermino")
-    private LocalDate dtTermino;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonProperty("validoAte")
+    private LocalDate validoAte;
 
-    public NotificacaoViagemRequest(String destino, LocalDate dtTermino) {
+    public NotificacaoViagemRequestFeign(String destino, LocalDate validoAte) {
         this.destino = destino;
-        this.dtTermino = dtTermino;
+        this.validoAte = validoAte;
     }
 
     public NotificacaoViagem toModel(Long id, Cartao cartao, String userAgent, String ipAddress){
-        return new NotificacaoViagem(id,cartao,userAgent,ipAddress,this.destino,this.dtTermino);
+        return new NotificacaoViagem(id,cartao,userAgent,ipAddress,this.destino,this.validoAte);
     }
 }

@@ -1,7 +1,7 @@
 server:
   port: ${PORT:8081}
   servlet:
-    context-path: /propostas
+    context-path: /api
 
 spring:
   application:
@@ -42,7 +42,11 @@ feign:
   client:
     config:
       default:
+        connectTimeout: 50000
+        readTimeout: 50000
+        loggerLevel: full
         errorDecoder: com.zup.academy.proxies.config.ClientErrorDecoder
+
   metrics:
     enabled: true
 
@@ -55,7 +59,7 @@ opentracing:
     enabled: true
     service-name: "proposta"
     http-sender:
-      url: ${HOST_OPEN_TRACING:http://localhost:14268/api/traces}
+      url: ${JAEGER_ENDPOINT:http://localhost:14268/api/traces}
     probabilistic-sampler:
       sampling-rate: 1
   spring:
@@ -64,10 +68,10 @@ opentracing:
         enabled: false
 
 clients:
-  account:
-    url: ${ACCOUNT_HOST:localhost:8888/api/cartoes}
-  solicitacao:
-    url: ${SOLICITACAO_HOST:localhost:9999/api}
+  contas:
+    url: ${URL_SISTEMA_CARTAO:localhost:8888/api/cartoes}
+  analise:
+    url: ${URL_SISTEMA_CONTAS:localhost:9999/api}
 
 management:
   endpoints:

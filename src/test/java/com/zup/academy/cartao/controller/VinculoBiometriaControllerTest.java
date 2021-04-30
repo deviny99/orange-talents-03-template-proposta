@@ -1,7 +1,7 @@
 package com.zup.academy.cartao.controller;
 
 import com.zup.academy.cartao.domain.Cartao;
-import com.zup.academy.cartao.dto.BiometriaRequest;
+import com.zup.academy.cartao.dto.biometria.BiometriaRequest;
 import com.zup.academy.cartao.repository.CartaoRepository;
 import com.zup.academy.global.controller.MvcRest;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +28,7 @@ public class VinculoBiometriaControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private MvcRest mvcRest;
-    private final String CARD_ENDPOINT = "/card";
+    private final String CARD_ENDPOINT = "/cards";
     @Autowired
     private CartaoRepository cartaoRepository;
 

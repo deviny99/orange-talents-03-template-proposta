@@ -26,6 +26,9 @@ public class Cartao {
     private Set<Biometria> biometrias = new HashSet();
     @Enumerated(EnumType.STRING)
     private StatusCartao statusCartao = StatusCartao.ATIVO;
+    @Fetch(FetchMode.JOIN)
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<CarteiraDigital> carteirasDigitais = new HashSet() ;
 
     /**Construtor vazio, Unico que utiliza esse construtor é o Hibernate*/
     @Deprecated
@@ -51,6 +54,7 @@ public class Cartao {
     }
 
     public void vincularBiometria(Biometria biometria){
+
         if(biometria==null){
             throw CustomException.notFound("Não foi selecionado nenhuma biometria para ser vinculada " +
                     "ao cartao");
@@ -59,10 +63,26 @@ public class Cartao {
     }
 
     public void bloquear(){
+
         if (this.statusCartao.equals(StatusCartao.BLOQUEADO)){
             throw CustomException.unprocessable("Esse cartão já está bloqueado");
         }
         this.statusCartao = StatusCartao.BLOQUEADO;
     }
 
+    public void desbloquear(){
+
+        if (this.statusCartao.equals(StatusCartao.ATIVO)){
+            throw CustomException.unprocessable("Esse cartão já está desbloqueado");
+        }
+        this.statusCartao = StatusCartao.ATIVO;
+    }
+
+    public void associarCarteira(CarteiraDigital carteiraDigital){
+
+        if (this.carteirasDigitais.contains(carteiraDigital)){
+            throw CustomException.unprocessable("Essa carteira digital já está associada para esse cartão");
+        }
+        this.carteirasDigitais.add(carteiraDigital);
+    }
 }

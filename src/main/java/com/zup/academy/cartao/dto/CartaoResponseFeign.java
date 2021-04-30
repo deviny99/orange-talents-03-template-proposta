@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zup.academy.cartao.domain.Cartao;
 import java.time.LocalDateTime;
 
-public class CartaoResponse {
+public class CartaoResponseFeign {
 
     @JsonProperty("id")
     private String id;
@@ -18,5 +18,6 @@ public class CartaoResponse {
     public Cartao toModel(Long id){
        return new Cartao(id,this.id,this.titular,this.emitidoEm);
     }
+
 
 }
